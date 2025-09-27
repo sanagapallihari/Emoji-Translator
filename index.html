@@ -19,54 +19,53 @@
 <div class="output" id="outputText"></div>
 
 <script>
-  // Only widely supported emojis
-  const phraseEmoji = {
-    "i love you": "❤️💋",
-    "good night": "🌙😴",
-    "good morning": "☀️🌅",
-    "happy birthday": "🎂🎉"
-  };
+const phraseEmoji = {
+  "i love you": "❤️💋",
+  "good night": "🌙😴",
+  "good morning": "☀️🌅",
+  "happy birthday": "🎂🎉"
+};
 
-  const wordEmoji = {
-    "i": "👁️", "me": "🙋", "you": "🖐️",
-    "love": "❤️", "like": "👍", "hate": "💔",
-    "happy": "😄", "sad": "😢",
-    "pizza": "🍕", "coffee": "☕", "tea": "🍵",
-    "cat": "🐱", "dog": "🐶", "money": "💰",
-    "party": "🎉", "dance": "💃", "sleep": "😴",
-    "music": "🎵", "fire": "🔥", "star": "⭐",
-    "moon": "🌙", "sun": "☀️", "phone": "📱",
-    "computer": "💻", "code": "💻", "study": "📚",
-    "book": "📖", "car": "🚗", "bike": "🚲",
-    "work": "🏢", "yes": "✅", "no": "❌",
-    "maybe": "🤷", "hello": "👋", "hi": "👋",
-    "bye": "👋", "thanks": "🙏", "thank": "🙏",
-    "wow": "😲", "what": "❓", "why": "❓",
-    "who": "👤", "where": "📍", "when": "⏰",
-    "ok": "👌"
-  };
+const wordEmoji = {
+  "i": "👁️", "me": "🙋", "you": "🖐️",
+  "love": "❤️", "like": "👍", "hate": "💔",
+  "happy": "😄", "sad": "😢",
+  "pizza": "🍕", "coffee": "☕", "tea": "🍵",
+  "cat": "🐱", "dog": "🐶", "money": "💰",
+  "party": "🎉", "dance": "💃", "sleep": "😴",
+  "music": "🎵", "fire": "🔥", "star": "⭐",
+  "moon": "🌙", "sun": "☀️", "phone": "📱",
+  "computer": "💻", "code": "💻", "study": "📚",
+  "book": "📖", "car": "🚗", "bike": "🚲",
+  "work": "🏢", "yes": "✅", "no": "❌",
+  "maybe": "🤷", "hello": "👋", "hi": "👋",
+  "bye": "👋", "thanks": "🙏", "thank": "🙏",
+  "wow": "😲", "what": "❓", "why": "❓",
+  "who": "👤", "where": "📍", "when": "⏰",
+  "ok": "👌"
+};
 
-  function translate() {
-    let text = document.getElementById("inputText").value;
-    if (!text) { document.getElementById("outputText").innerText = ""; return; }
+function translate() {
+  let text = document.getElementById("inputText").value;
+  if (!text) { document.getElementById("outputText").innerText = ""; return; }
 
-    let lowerText = text.toLowerCase();
+  let lowerText = text.toLowerCase();
 
-    // Step 1: Replace phrases
-    for (let phrase in phraseEmoji) {
-      const regex = new RegExp(phrase, "gi");
-      lowerText = lowerText.replace(regex, phraseEmoji[phrase]);
-    }
-
-    // Step 2: Replace single words, keep punctuation
-    let words = lowerText.split(/\b/); // split at word boundaries
-    let translated = words.map(w => {
-      let lw = w.toLowerCase();
-      return wordEmoji[lw] || w; // fallback: keep original
-    });
-
-    document.getElementById("outputText").innerText = translated.join("");
+  // Step 1: Replace multi-word phrases
+  for (let phrase in phraseEmoji) {
+    const regex = new RegExp(phrase, "gi"); // case-insensitive
+    lowerText = lowerText.replace(regex, phraseEmoji[phrase]);
   }
+
+  // Step 2: Replace single words, preserve punctuation
+  let words = lowerText.split(/(\s+|[,.!?])/); // split by spaces or punctuation
+  let translated = words.map(w => {
+    let lw = w.toLowerCase();
+    return wordEmoji[lw] || w; // fallback: keep original
+  });
+
+  document.getElementById("outputText").innerText = translated.join("");
+}
 </script>
 </body>
 </html>
