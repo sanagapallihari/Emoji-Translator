@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Emoji Translator 😄➡️😀</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fdf6e3;
+      color: #333;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 2.5em;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      font-size: 1em;
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+      margin-top: 20px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 8px;
+      background: #ffcc00;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ffb700;
+    }
+    .output {
+      margin-top: 30px;
+      font-size: 1.5em;
+      padding: 15px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+      min-height: 50px;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Emoji Translator 😄</h1>
+  <p>Type something and translate it into emojis!</p>
+  <textarea id="inputText" placeholder="Type your sentence here..."></textarea><br>
+  <button onclick="translate()">Translate ➡️</button>
+  
+  <div class="output" id="outputText"></div>
+
+  <script>
+    // Word to emoji mapping
+    const wordEmoji = {
+      "i": "👁️", "me": "🙋", "you": "🫵",
+      "love": "❤️", "like": "👍", "hate": "💔",
+      "happy": "😄", "sad": "😢",
+      "pizza": "🍕", "coffee": "☕", "tea": "🍵",
+      "cat": "🐱", "dog": "🐶", "money": "💰",
+      "party": "🎉", "dance": "💃", "sleep": "😴",
+      "music": "🎵", "fire": "🔥", "star": "⭐",
+      "moon": "🌙", "sun": "☀️", "phone": "📱",
+      "computer": "💻", "code": "💻", "study": "📚",
+      "book": "📖", "car": "🚗", "bike": "🚲",
+      "work": "🏢", "yes": "✅", "no": "❌",
+      "maybe": "🤷", "hello": "👋", "hi": "👋",
+      "bye": "👋", "thanks": "🙏", "thank": "🙏",
+      "wow": "😲", "what": "❓", "why": "❓",
+      "who": "👤", "where": "📍", "when": "⏰",
+      "ok": "👌"
+    };
+
+    // Phrase to emoji mapping
+    const phraseEmoji = {
+      "i love you": "❤️💋",
+      "good night": "🌙😴",
+      "good morning": "☀️🌅",
+      "happy birthday": "🎂🎉"
+    };
+
+    // Translate function
+    function translate() {
+      let text = document.getElementById("inputText").value;
+      let lower = text.toLowerCase();
+
+      // Replace phrases first
+      for (let phrase in phraseEmoji) {
+        let regex = new RegExp("\\b" + phrase + "\\b", "gi");
+        lower = lower.replace(regex, phraseEmoji[phrase]);
+      }
+
+      // Split into words
+      let words = lower.split(/\s+/);
+      let result = words.map(word => {
+        if (wordEmoji[word]) {
+          return wordEmoji[word];
+        } else {
+          return word; // fallback: keep word as is
+        }
+      }).join(" ");
+
+      document.getElementById("outputText").innerText = result;
+    }
+  </script>
+</body>
+</html>
