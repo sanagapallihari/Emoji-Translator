@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Emoji Translator 😄</title>
+<title>Emoji Translator</title>
 <style>
-body { font-family: Arial; text-align: center; padding: 40px; background: #fdf6e3; }
-textarea { width: 80%; height: 100px; font-size: 1em; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
-button { margin-top: 20px; padding: 12px 20px; font-size: 1.2em; border: none; border-radius: 8px; background: #ffcc00; cursor: pointer; }
-button:hover { background: #ffb700; }
-.output { margin-top: 30px; font-size: 1.5em; padding: 15px; background: #fff; border-radius: 12px; min-height: 50px; width: 80%; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+  body { font-family: Arial; text-align: center; padding: 40px; background: #fdf6e3; }
+  textarea { width: 80%; height: 100px; font-size: 1em; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
+  button { margin-top: 20px; padding: 12px 20px; font-size: 1.2em; border: none; border-radius: 8px; background: #ffcc00; cursor: pointer; }
+  button:hover { background: #ffb700; }
+  .output { margin-top: 30px; font-size: 1.5em; padding: 15px; background: #fff; border-radius: 12px; min-height: 50px; width: 80%; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
 </style>
 </head>
 <body>
 <h1>Emoji Translator 😄</h1>
-<p>Type something and translate it into emojis!</p>
+<p>Type your text and click Translate!</p>
 <textarea id="inputText" placeholder="Type your sentence here..."></textarea><br>
 <button onclick="translate()">Translate ➡️</button>
 <div class="output" id="outputText"></div>
@@ -47,26 +47,28 @@ const wordEmoji = {
 
 function translate() {
   let text = document.getElementById("inputText").value;
-  if (!text) { document.getElementById("outputText").innerText = ""; return; }
+  if (!text) {
+    document.getElementById("outputText").innerText = "";
+    return;
+  }
 
   let output = text.toLowerCase();
 
-  // Step 1: Replace multi-word phrases
+  // Step 1: Replace multi-word phrases first
   for (let phrase in phraseEmoji) {
-    output = output.split(phrase).join(phraseEmoji[phrase]);
+    while (output.includes(phrase)) {
+      output = output.replace(phrase, phraseEmoji[phrase]);
+    }
   }
 
-  // Step 2: Replace single words
-  const words = output.split(" ");
-  const translatedWords = words.map(w => {
-    // Remove punctuation at end of word
-    const punctuation = w.match(/[.,!?]$/);
-    const core = w.replace(/[.,!?]$/, "");
-    const emoji = wordEmoji[core] || core;
-    return punctuation ? emoji + punctuation[0] : emoji;
-  });
+  // Step 2: Replace single words one by one
+  for (let word in wordEmoji) {
+    while (output.includes(word)) {
+      output = output.replace(word, wordEmoji[word]);
+    }
+  }
 
-  document.getElementById("outputText").innerText = translatedWords.join(" ");
+  document.getElementById("outputText").innerText = output;
 }
 </script>
 </body>
