@@ -1,71 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Emoji Translator 😄➡️😀</title>
-  <style>
-    body { font-family: Arial; text-align: center; padding: 40px; background: #fdf6e3; }
-    textarea { width: 80%; height: 100px; font-size: 1em; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
-    button { margin-top: 20px; padding: 12px 20px; font-size: 1.2em; border: none; border-radius: 8px; background: #ffcc00; cursor: pointer; }
-    button:hover { background: #ffb700; }
-    .output { margin-top: 30px; font-size: 1.5em; padding: 15px; background: #fff; border-radius: 12px; min-height: 50px; width: 80%; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
-  </style>
+<meta charset="UTF-8">
+<title>Emoji Translator 😄</title>
+<style>
+  body { font-family: Arial; text-align: center; padding: 40px; background: #fdf6e3; }
+  textarea { width: 80%; height: 100px; font-size: 1em; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
+  button { margin-top: 20px; padding: 12px 20px; font-size: 1.2em; border: none; border-radius: 8px; background: #ffcc00; cursor: pointer; }
+  button:hover { background: #ffb700; }
+  .output { margin-top: 30px; font-size: 1.5em; padding: 15px; background: #fff; border-radius: 12px; min-height: 50px; width: 80%; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+</style>
 </head>
 <body>
-  <h1>Emoji Translator 😄</h1>
-  <p>Type something and translate it into emojis!</p>
-  <textarea id="inputText" placeholder="Type your sentence here..."></textarea><br>
-  <button onclick="translate()">Translate ➡️</button>
-  <div class="output" id="outputText"></div>
+<h1>Emoji Translator 😄</h1>
+<p>Type something and translate it into emojis!</p>
+<textarea id="inputText" placeholder="Type your sentence here..."></textarea><br>
+<button onclick="translate()">Translate ➡️</button>
+<div class="output" id="outputText"></div>
 
-  <script>
-    const phraseEmoji = {
-      "i love you": "❤️💋",
-      "good night": "🌙😴",
-      "good morning": "☀️🌅",
-      "happy birthday": "🎂🎉"
-    };
+<script>
+  // Only widely supported emojis
+  const phraseEmoji = {
+    "i love you": "❤️💋",
+    "good night": "🌙😴",
+    "good morning": "☀️🌅",
+    "happy birthday": "🎂🎉"
+  };
 
-    const wordEmoji = {
-      "i": "👁️", "me": "🙋", "you": "🫵",
-      "love": "❤️", "like": "👍", "hate": "💔",
-      "happy": "😄", "sad": "😢",
-      "pizza": "🍕", "coffee": "☕", "tea": "🍵",
-      "cat": "🐱", "dog": "🐶", "money": "💰",
-      "party": "🎉", "dance": "💃", "sleep": "😴",
-      "music": "🎵", "fire": "🔥", "star": "⭐",
-      "moon": "🌙", "sun": "☀️", "phone": "📱",
-      "computer": "💻", "code": "💻", "study": "📚",
-      "book": "📖", "car": "🚗", "bike": "🚲",
-      "work": "🏢", "yes": "✅", "no": "❌",
-      "maybe": "🤷", "hello": "👋", "hi": "👋",
-      "bye": "👋", "thanks": "🙏", "thank": "🙏",
-      "wow": "😲", "what": "❓", "why": "❓",
-      "who": "👤", "where": "📍", "when": "⏰",
-      "ok": "👌"
-    };
+  const wordEmoji = {
+    "i": "👁️", "me": "🙋", "you": "🖐️",
+    "love": "❤️", "like": "👍", "hate": "💔",
+    "happy": "😄", "sad": "😢",
+    "pizza": "🍕", "coffee": "☕", "tea": "🍵",
+    "cat": "🐱", "dog": "🐶", "money": "💰",
+    "party": "🎉", "dance": "💃", "sleep": "😴",
+    "music": "🎵", "fire": "🔥", "star": "⭐",
+    "moon": "🌙", "sun": "☀️", "phone": "📱",
+    "computer": "💻", "code": "💻", "study": "📚",
+    "book": "📖", "car": "🚗", "bike": "🚲",
+    "work": "🏢", "yes": "✅", "no": "❌",
+    "maybe": "🤷", "hello": "👋", "hi": "👋",
+    "bye": "👋", "thanks": "🙏", "thank": "🙏",
+    "wow": "😲", "what": "❓", "why": "❓",
+    "who": "👤", "where": "📍", "when": "⏰",
+    "ok": "👌"
+  };
 
-    function translate() {
-      let text = document.getElementById("inputText").value;
-      if (!text) { document.getElementById("outputText").innerText = ""; return; }
+  function translate() {
+    let text = document.getElementById("inputText").value;
+    if (!text) { document.getElementById("outputText").innerText = ""; return; }
 
-      let lowerText = text.toLowerCase();
+    let lowerText = text.toLowerCase();
 
-      // Step 1: Replace multi-word phrases
-      for (let phrase in phraseEmoji) {
-        const regex = new RegExp(phrase, "gi"); // case-insensitive
-        lowerText = lowerText.replace(regex, phraseEmoji[phrase]);
-      }
-
-      // Step 2: Replace single words
-      let words = lowerText.split(/\b/); // split by word boundaries to preserve punctuation
-      let translated = words.map(w => {
-        let lw = w.toLowerCase();
-        return wordEmoji[lw] || w;
-      });
-
-      document.getElementById("outputText").innerText = translated.join("");
+    // Step 1: Replace phrases
+    for (let phrase in phraseEmoji) {
+      const regex = new RegExp(phrase, "gi");
+      lowerText = lowerText.replace(regex, phraseEmoji[phrase]);
     }
-  </script>
+
+    // Step 2: Replace single words, keep punctuation
+    let words = lowerText.split(/\b/); // split at word boundaries
+    let translated = words.map(w => {
+      let lw = w.toLowerCase();
+      return wordEmoji[lw] || w; // fallback: keep original
+    });
+
+    document.getElementById("outputText").innerText = translated.join("");
+  }
+</script>
 </body>
 </html>
