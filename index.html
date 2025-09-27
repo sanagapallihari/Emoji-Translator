@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Emoji Translator</title>
+<title>Emoji Translator 😄</title>
 <style>
-  body { font-family: Arial; text-align: center; padding: 40px; background: #fdf6e3; }
-  textarea { width: 80%; height: 100px; font-size: 1em; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
-  button { margin-top: 20px; padding: 12px 20px; font-size: 1.2em; border: none; border-radius: 8px; background: #ffcc00; cursor: pointer; }
-  button:hover { background: #ffb700; }
-  .output { margin-top: 30px; font-size: 1.5em; padding: 15px; background: #fff; border-radius: 12px; min-height: 50px; width: 80%; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+body { font-family: Arial; text-align: center; padding: 40px; background: #fdf6e3; }
+textarea { width: 80%; height: 100px; font-size: 1em; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
+button { margin-top: 20px; padding: 12px 20px; font-size: 1.2em; border: none; border-radius: 8px; background: #ffcc00; cursor: pointer; }
+button:hover { background: #ffb700; }
+.output { margin-top: 30px; font-size: 1.5em; padding: 15px; background: #fff; border-radius: 12px; min-height: 50px; width: 80%; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
 </style>
 </head>
 <body>
@@ -46,29 +46,21 @@ const wordEmoji = {
 };
 
 function translate() {
-  let text = document.getElementById("inputText").value;
-  if (!text) {
-    document.getElementById("outputText").innerText = "";
-    return;
-  }
-
-  let output = text.toLowerCase();
+  let text = document.getElementById("inputText").value.toLowerCase();
 
   // Step 1: Replace multi-word phrases first
   for (let phrase in phraseEmoji) {
-    while (output.includes(phrase)) {
-      output = output.replace(phrase, phraseEmoji[phrase]);
-    }
+    const regex = new RegExp(phrase, "gi");
+    text = text.replace(regex, phraseEmoji[phrase]);
   }
 
-  // Step 2: Replace single words one by one
+  // Step 2: Replace single words (using word boundaries so "i" won't match "like")
   for (let word in wordEmoji) {
-    while (output.includes(word)) {
-      output = output.replace(word, wordEmoji[word]);
-    }
+    const regex = new RegExp("\\b" + word + "\\b", "gi");
+    text = text.replace(regex, wordEmoji[word]);
   }
 
-  document.getElementById("outputText").innerText = output;
+  document.getElementById("outputText").innerText = text;
 }
 </script>
 </body>
