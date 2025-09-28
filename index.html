@@ -12,10 +12,12 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: #f0f0f0;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      transition: background 0.5s ease;
     }
     h1 {
       margin-bottom: 20px;
+      color: #333;
     }
     textarea {
       width: 300px;
@@ -48,6 +50,8 @@
       border: 1px solid #ccc;
       width: 300px;
       text-align: center;
+      min-height: 50px;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -59,46 +63,68 @@
 
   <script>
     const dictionary = {
-      "i": "😊",
-      "love": "❤️",
-      "you": "👉👈",
-      "happy": "😁",
-      "sad": "😢",
-      "dog": "🐶",
-      "cat": "🐱",
-      "sun": "☀️",
-      "star": "⭐",
-      "food": "🍔",
-      "pizza": "🍕",
-      "burger": "🍔",
-      "apple": "🍎",
-      "banana": "🍌",
-      "coffee": "☕",
-      "car": "🚗",
-      "bike": "🚲",
-      "house": "🏠",
-      "tree": "🌳",
-      "flower": "🌸",
-      "fire": "🔥",
-      "water": "💧",
-      "book": "📚",
-      "music": "🎵",
-      "game": "🎮",
-      "computer": "💻",
-      "phone": "📱",
-      "party": "🎉",
-      "school": "🏫",
-      "money": "💰",
-      "heart": "💖",
-      "smile": "😊",
-      "cry": "😭"
+      // Greetings
+      "hi": "👋😊", "hello": "🙋‍♂️", "bye": "👋", "goodnight": "🌙✨", "morning": "🌅☀️", "evening": "🌇", "afternoon": "🌞",
+      "happy birthday": "🎂🎉🎁🥳", "congratulations": "🎊👏", "anniversary": "💍🎉",
+
+      // Emotions
+      "happy": "😁", "sad": "😢", "angry": "😡", "love": "❤️", "cry": "😭", "smile": "😊", "laugh": "😂", "shock": "😲", "cool": "😎", "sleep": "😴",
+
+      // People
+      "man": "👨", "woman": "👩", "boy": "👦", "girl": "👧", "baby": "👶", "friend": "🤝", "family": "👨‍👩‍👧‍👦",
+
+      // Food & Drinks
+      "pizza": "🍕", "burger": "🍔", "fries": "🍟", "hotdog": "🌭", "taco": "🌮", "sandwich": "🥪", "rice": "🍚", "cake": "🎂", "icecream": "🍦", "chocolate": "🍫",
+      "coffee": "☕", "tea": "🍵", "milk": "🥛", "water": "💧", "beer": "🍺", "wine": "🍷",
+
+      // Animals
+      "dog": "🐶", "cat": "🐱", "lion": "🦁", "tiger": "🐯", "bear": "🐻", "monkey": "🐒", "horse": "🐴", "cow": "🐄", "pig": "🐷", "chicken": "🐔",
+      "fish": "🐟", "whale": "🐳", "dolphin": "🐬", "elephant": "🐘", "rabbit": "🐇", "panda": "🐼",
+
+      // Nature
+      "sun": "☀️", "moon": "🌙", "star": "⭐", "rain": "🌧️", "cloud": "☁️", "snow": "❄️", "fire": "🔥", "tree": "🌳", "flower": "🌸", "rose": "🌹",
+
+      // Objects
+      "phone": "📱", "computer": "💻", "book": "📚", "pen": "🖊️", "car": "🚗", "bike": "🚲", "bus": "🚌", "train": "🚆", "plane": "✈️", "house": "🏠",
+
+      // Sports & Activities
+      "football": "⚽", "basketball": "🏀", "tennis": "🎾", "cricket": "🏏", "game": "🎮", "music": "🎵", "dance": "💃", "party": "🎉",
+
+      // Symbols
+      "heart": "❤️", "broken": "💔", "star": "⭐", "check": "✔️", "cross": "❌", "question": "❓", "ok": "👌", "yes": "👍", "no": "👎"
     };
 
     function translateText() {
-      let input = document.getElementById("textInput").value.toLowerCase();
-      let words = input.split(/\s+/);
-      let translated = words.map(word => dictionary[word] || word).join(" ");
+      let input = document.getElementById("textInput").value.toLowerCase().trim();
+
+      // Replace phrases first
+      let translated = input;
+      for (let phrase in dictionary) {
+        let regex = new RegExp("\\b" + phrase + "\\b", "gi");
+        translated = translated.replace(regex, dictionary[phrase]);
+      }
+
+      // Replace leftover words with 🔤 if not in dictionary
+      translated = translated.split(/\s+/).map(word => {
+        return Object.values(dictionary).includes(word) ? word : (dictionary[word] || "🔤");
+      }).join(" ");
+
       document.getElementById("output").innerText = translated;
+
+      // Background changes
+      if (input.includes("goodnight")) {
+        document.body.style.background = "linear-gradient(135deg, #2c3e50, #000000)";
+      } else if (input.includes("hi") || input.includes("hello")) {
+        document.body.style.background = "linear-gradient(135deg, #fceabb, #f8b500)";
+      } else if (input.includes("morning")) {
+        document.body.style.background = "linear-gradient(135deg, #f6d365, #fda085)";
+      } else if (input.includes("happy birthday")) {
+        document.body.style.background = "linear-gradient(135deg, #ff9a9e, #fecfef)";
+      } else if (input.includes("sad") || input.includes("cry")) {
+        document.body.style.background = "linear-gradient(135deg, #83a4d4, #b6fbff)";
+      } else {
+        document.body.style.background = "linear-gradient(135deg, #89f7fe, #66a6ff)";
+      }
     }
   </script>
 </body>
