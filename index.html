@@ -1,65 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Emoji Translator</title>
-<style>
-body { font-family: Arial; text-align: center; padding: 40px; }
-textarea { width: 80%; height: 100px; padding: 10px; }
-button { margin-top: 20px; padding: 10px 20px; }
-.output { margin-top: 20px; font-size: 1.5em; min-height: 50px; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emoji Translator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    textarea {
+      width: 300px;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      resize: none;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .output {
+      margin-top: 20px;
+      font-size: 18px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 300px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
+  <h1>Emoji Translator</h1>
+  <textarea id="textInput" placeholder="Type something..."></textarea><br>
+  <button onclick="translateText()">Translate</button>
+  <div id="output" class="output"></div>
 
-<h1>Emoji Translator</h1>
-<textarea id="inputText" placeholder="Type here…"></textarea><br>
-<button onclick="translate()">Translate</button>
-<div class="output" id="outputText"></div>
-
-<script>
-function translate() {
-    let text = document.getElementById('inputText').value.toLowerCase();
-
-    // simple replacements
-    const phrases = {
-        "i love you": "❤️💋",
-        "good night": "🌙😴",
-        "good morning": "☀️🌅",
-        "happy birthday": "🎂🎉"
+  <script>
+    const dictionary = {
+      "i": "😊",
+      "love": "❤️",
+      "you": "👉👈",
+      "happy": "😁",
+      "sad": "😢",
+      "dog": "🐶",
+      "cat": "🐱",
+      "sun": "☀️",
+      "star": "⭐",
+      "food": "🍔",
     };
 
-    const words = {
-        "i": "👁️",
-        "you": "👋",
-        "love": "❤️",
-        "pizza": "🍕",
-        "coffee": "☕",
-        "cat": "🐱",
-        "dog": "🐶",
-        "hello": "👋",
-        "thanks": "🙏"
-    };
-
-    // replace phrases first
-    for (let key in phrases) {
-        if (text.includes(key)) {
-            text = text.split(key).join(phrases[key]);
-        }
+    function translateText() {
+      let input = document.getElementById("textInput").value.toLowerCase();
+      let words = input.split(/\s+/);
+      let translated = words.map(word => dictionary[word] || word).join(" ");
+      document.getElementById("output").innerText = translated;
     }
-
-    // replace words
-    let allWords = text.split(" ");
-    for (let i = 0; i < allWords.length; i++) {
-        let word = allWords[i];
-        if (words[word]) {
-            allWords[i] = words[word];
-        }
-    }
-
-    document.getElementById('outputText').innerText = allWords.join(" ");
-}
-</script>
-
+  </script>
 </body>
 </html>
