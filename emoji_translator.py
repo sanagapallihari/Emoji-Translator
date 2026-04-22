@@ -10,7 +10,7 @@ import re
 
 # Basic word -> emoji mapping. Extend this to your taste.
 WORD_EMOJI = {
-    "i": "👁️",
+    "i": "🙋‍♀️",
     "me": "🙋",
     "you": "🫵",
     "love": "❤️",
